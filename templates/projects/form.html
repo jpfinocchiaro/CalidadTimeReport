@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Editar' if project else 'Nuevo' }} proyecto{% endblock %}
+{% block content %}
+<h2>{{ 'Editar proyecto' if project else 'Nuevo proyecto' }}</h2>
+<div class="card">
+  <form method="post">
+    <div class="field">
+      <label>Cliente *</label>
+      <select name="client_id" required>
+        <option value="">— Elegí un cliente —</option>
+        {% for c in clients %}
+          <option value="{{ c.id }}" {% if project and project.client_id == c.id %}selected{% endif %}>
+            {{ c.name }}{% if not c.active %} (inactivo){% endif %}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="row">
+      <div class="field">
+        <label>Nombre *</label>
+        <input type="text" name="name" required value="{{ project.name if project else '' }}">
+      </div>
+      <div class="field">
+        <label>Código</label>
+        <input type="text" name="code" value="{{ project.code if project and project.code else '' }}">
+      </div>
+    </div>
+    <div class="field">
+      <label>Descripción</label>
+      <textarea name="description">{{ project.description if project and project.description else '' }}</textarea>
+    </div>
+    <div class="field">
+      <label>Consultores asignados</label>
+      {% if consultants %}
+        <div class="consultant-grid">
+          {% for c in consultants %}
+            <label class="consultant-pick">
+              <input type="checkbox" name="consultant_ids" value="{{ c.id }}"
+                     {% if c.id in selected_consultant_ids %}checked{% endif %}>
+              <span>{{ c.name }}{% if c.role %} <em class="muted">· {{ c.role }}</em>{% endif %}
+                {% if not c.active %} <span class="badge inactive">inactivo</span>{% endif %}
+              </span>
+            </label>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="muted">No hay consultores cargados. <a href="{{ url_for('consultants_new') }}">Crear uno</a>.</p>
+      {% endif %}
+    </div>
+    <div class="field checkbox-row">
+      <input type="checkbox" id="active" name="active" {% if not project or project.active %}checked{% endif %}>
+      <label for="active">Activo</label>
+    </div>
+    <button class="btn" type="submit">Guardar</button>
+    <a class="btn secondary" href="{{ url_for('projects_list') }}">Cancelar</a>
+  </form>
+</div>
+{% endblock %}

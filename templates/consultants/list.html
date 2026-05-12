@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Consultores{% endblock %}
+{% block content %}
+<div class="toolbar">
+  <h2>Consultores</h2>
+  <a class="btn" href="{{ url_for('consultants_new') }}">+ Nuevo consultor</a>
+</div>
+
+<div class="card">
+  {% if consultants %}
+  <table>
+    <thead>
+      <tr><th>Nombre</th><th>Rol</th><th>Email</th><th>Proyectos</th><th>Estado</th><th></th></tr>
+    </thead>
+    <tbody>
+      {% for c in consultants %}
+      <tr>
+        <td>{{ c.name }}</td>
+        <td>{{ c.role or '—' }}</td>
+        <td>{{ c.email or '—' }}</td>
+        <td>{{ c.projects|length }}</td>
+        <td>
+          {% if c.active %}<span class="badge active">Activo</span>
+          {% else %}<span class="badge inactive">Inactivo</span>{% endif %}
+        </td>
+        <td class="actions">
+          <a class="btn small secondary" href="{{ url_for('consultants_edit', consultant_id=c.id) }}">Editar</a>
+          <form class="inline-form" method="post" action="{{ url_for('consultants_delete', consultant_id=c.id) }}"
+                onsubmit="return confirm('¿Eliminar este consultor? Se desvincula de sus proyectos.');">
+            <button class="btn small danger" type="submit">Eliminar</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="muted">No hay consultores cargados todavía.</p>
+  {% endif %}
+</div>
+{% endblock %}

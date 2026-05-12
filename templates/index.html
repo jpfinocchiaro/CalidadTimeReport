@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Inicio · Time Report{% endblock %}
+{% block content %}
+<h2>Resumen</h2>
+<div class="stat-grid">
+  <div class="stat"><div class="label">Clientes</div><div class="value">{{ totals.clients }}</div></div>
+  <div class="stat"><div class="label">Consultores</div><div class="value">{{ totals.consultants }}</div></div>
+  <div class="stat"><div class="label">Proyectos</div><div class="value">{{ totals.projects }}</div></div>
+  <div class="stat"><div class="label">Registros</div><div class="value">{{ totals.entries }}</div></div>
+  <div class="stat"><div class="label">Horas totales</div><div class="value">{{ '%.2f'|format(totals.hours or 0) }}</div></div>
+</div>
+
+<div class="card" style="margin-top:24px">
+  <h3>Accesos rápidos</h3>
+  <p class="muted">Empezá creando un cliente, luego asociá un proyecto, y finalmente cargá horas.</p>
+  <a class="btn" href="{{ url_for('clients_new') }}">+ Cliente</a>
+  <a class="btn" href="{{ url_for('consultants_new') }}">+ Consultor</a>
+  <a class="btn" href="{{ url_for('projects_new') }}">+ Proyecto</a>
+  <a class="btn" href="{{ url_for('hours_new') }}">+ Cargar horas</a>
+</div>
+{% endblock %}

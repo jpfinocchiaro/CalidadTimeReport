@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Editar' if consultant else 'Nuevo' }} consultor{% endblock %}
+{% block content %}
+<h2>{{ 'Editar consultor' if consultant else 'Nuevo consultor' }}</h2>
+<div class="card">
+  <form method="post">
+    <div class="field">
+      <label>Nombre *</label>
+      <input type="text" name="name" required value="{{ consultant.name if consultant else '' }}">
+    </div>
+    <div class="row">
+      <div class="field">
+        <label>Rol / posición</label>
+        <input type="text" name="role" value="{{ consultant.role if consultant and consultant.role else '' }}">
+      </div>
+      <div class="field">
+        <label>Email</label>
+        <input type="text" name="email" value="{{ consultant.email if consultant and consultant.email else '' }}">
+      </div>
+    </div>
+    <div class="field">
+      <label>Notas</label>
+      <textarea name="notes">{{ consultant.notes if consultant and consultant.notes else '' }}</textarea>
+    </div>
+    <div class="field checkbox-row">
+      <input type="checkbox" id="active" name="active" {% if not consultant or consultant.active %}checked{% endif %}>
+      <label for="active">Activo</label>
+    </div>
+    <button class="btn" type="submit">Guardar</button>
+    <a class="btn secondary" href="{{ url_for('consultants_list') }}">Cancelar</a>
+  </form>
+</div>
+{% endblock %}

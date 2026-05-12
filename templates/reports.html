@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}Reportes{% endblock %}
+{% block content %}
+<h2>Reportes</h2>
+
+<div class="card">
+  <form method="get" class="row">
+    <div class="field">
+      <label>Desde</label>
+      <input type="date" name="from" value="{{ filters['from'] }}">
+    </div>
+    <div class="field">
+      <label>Hasta</label>
+      <input type="date" name="to" value="{{ filters['to'] }}">
+    </div>
+    <div class="field">
+      <label>Cliente</label>
+      <select name="client_id">
+        <option value="">— Todos —</option>
+        {% for c in clients %}
+          <option value="{{ c.id }}" {% if filters['client_id'] == c.id %}selected{% endif %}>{{ c.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="field" style="display:flex;align-items:flex-end">
+      <button class="btn" type="submit">Aplicar</button>
+      <a class="btn secondary" href="{{ url_for('reports') }}" style="margin-left:8px">Limpiar</a>
+    </div>
+  </form>
+</div>
+
+<div class="stat-grid">
+  <div class="stat">
+    <div class="label">Total horas</div>
+    <div class="value">{{ '%.2f'|format(grand_total or 0) }}</div>
+  </div>
+</div>
+
+<div class="card" style="margin-top:16px">
+  <h3>Por cliente</h3>
+  {% if by_client %}
+  <table>
+    <thead><tr><th>Cliente</th><th>Horas</th></tr></thead>
+    <tbody>
+      {% for name, hrs in by_client %}
+        <tr><td>{{ name }}</td><td>{{ '%.2f'|format(hrs or 0) }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}<p class="muted">Sin datos para los filtros aplicados.</p>{% endif %}
+</div>
+
+<div class="card">
+  <h3>Por proyecto</h3>
+  {% if by_project %}
+  <table>
+    <thead><tr><th>Cliente</th><th>Proyecto</th><th>Horas</th></tr></thead>
+    <tbody>
+      {% for client_name, project_name, hrs in by_project %}
+        <tr><td>{{ client_name }}</td><td>{{ project_name }}</td><td>{{ '%.2f'|format(hrs or 0) }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}<p class="muted">Sin datos.</p>{% endif %}
+</div>
+
+<div class="card">
+  <h3>Por persona</h3>
+  {% if by_person %}
+  <table>
+    <thead><tr><th>Persona</th><th>Horas</th></tr></thead>
+    <tbody>
+      {% for person, hrs in by_person %}
+        <tr><td>{{ person }}</td><td>{{ '%.2f'|format(hrs or 0) }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}<p class="muted">Sin datos.</p>{% endif %}
+</div>
+{% endblock %}

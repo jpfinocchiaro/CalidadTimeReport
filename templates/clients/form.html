@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Editar' if client else 'Nuevo' }} cliente{% endblock %}
+{% block content %}
+<h2>{{ 'Editar cliente' if client else 'Nuevo cliente' }}</h2>
+<div class="card">
+  <form method="post">
+    <div class="field">
+      <label>Nombre *</label>
+      <input type="text" name="name" required value="{{ client.name if client else '' }}">
+    </div>
+    <div class="field">
+      <label>Contacto</label>
+      <input type="text" name="contact" value="{{ client.contact if client and client.contact else '' }}">
+    </div>
+    <div class="field">
+      <label>Notas</label>
+      <textarea name="notes">{{ client.notes if client and client.notes else '' }}</textarea>
+    </div>
+    <div class="field checkbox-row">
+      <input type="checkbox" id="active" name="active" {% if not client or client.active %}checked{% endif %}>
+      <label for="active">Activo</label>
+    </div>
+    <button class="btn" type="submit">Guardar</button>
+    <a class="btn secondary" href="{{ url_for('clients_list') }}">Cancelar</a>
+  </form>
+</div>
+{% endblock %}

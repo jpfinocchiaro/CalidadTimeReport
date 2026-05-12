@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Clientes{% endblock %}
+{% block content %}
+<div class="toolbar">
+  <h2>Clientes</h2>
+  <a class="btn" href="{{ url_for('clients_new') }}">+ Nuevo cliente</a>
+</div>
+
+<div class="card">
+  {% if clients %}
+  <table>
+    <thead>
+      <tr><th>Nombre</th><th>Contacto</th><th>Proyectos</th><th>Estado</th><th></th></tr>
+    </thead>
+    <tbody>
+      {% for c in clients %}
+      <tr>
+        <td>{{ c.name }}</td>
+        <td>{{ c.contact or '—' }}</td>
+        <td>{{ c.projects|length }}</td>
+        <td>
+          {% if c.active %}<span class="badge active">Activo</span>
+          {% else %}<span class="badge inactive">Inactivo</span>{% endif %}
+        </td>
+        <td class="actions">
+          <a class="btn small secondary" href="{{ url_for('clients_edit', client_id=c.id) }}">Editar</a>
+          <form class="inline-form" method="post" action="{{ url_for('clients_delete', client_id=c.id) }}"
+                onsubmit="return confirm('¿Eliminar este cliente y todos sus proyectos/horas?');">
+            <button class="btn small danger" type="submit">Eliminar</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="muted">No hay clientes cargados todavía.</p>
+  {% endif %}
+</div>
+{% endblock %}

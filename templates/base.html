@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}Time Report{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header>
+    <h1>Calidad · Time Report</h1>
+    <nav>
+      <a href="{{ url_for('index') }}">Inicio</a>
+      <a href="{{ url_for('clients_list') }}">Clientes</a>
+      <a href="{{ url_for('consultants_list') }}">Consultores</a>
+      <a href="{{ url_for('projects_list') }}">Proyectos</a>
+      <a href="{{ url_for('hours_list') }}">Horas</a>
+      <a href="{{ url_for('reports') }}">Reportes</a>
+    </nav>
+  </header>
+  <main>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for cat, msg in messages %}
+        <div class="flash {{ cat }}">{{ msg }}</div>
+      {% endfor %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

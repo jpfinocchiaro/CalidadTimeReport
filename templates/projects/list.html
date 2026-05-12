@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Proyectos{% endblock %}
+{% block content %}
+<div class="toolbar">
+  <h2>Proyectos</h2>
+  <a class="btn" href="{{ url_for('projects_new') }}">+ Nuevo proyecto</a>
+</div>
+
+<div class="card">
+  {% if projects %}
+  <table>
+    <thead>
+      <tr><th>Cliente</th><th>Proyecto</th><th>Código</th><th>Consultores</th><th>Estado</th><th></th></tr>
+    </thead>
+    <tbody>
+      {% for p in projects %}
+      <tr>
+        <td>{{ p.client.name }}</td>
+        <td>{{ p.name }}</td>
+        <td>{{ p.code or '—' }}</td>
+        <td>
+          {% if p.consultants %}
+            {{ p.consultants|map(attribute='name')|join(', ') }}
+          {% else %}—{% endif %}
+        </td>
+        <td>
+          {% if p.active %}<span class="badge active">Activo</span>
+          {% else %}<span class="badge inactive">Inactivo</span>{% endif %}
+        </td>
+        <td class="actions">
+          <a class="btn small secondary" href="{{ url_for('projects_edit', project_id=p.id) }}">Editar</a>
+          <form class="inline-form" method="post" action="{{ url_for('projects_delete', project_id=p.id) }}"
+                onsubmit="return confirm('¿Eliminar este proyecto y todas sus horas?');">
+            <button class="btn small danger" type="submit">Eliminar</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="muted">No hay proyectos cargados todavía.</p>
+  {% endif %}
+</div>
+{% endblock %}

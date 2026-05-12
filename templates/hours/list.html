@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Horas{% endblock %}
+{% block content %}
+<div class="toolbar">
+  <h2>Carga de horas</h2>
+  <a class="btn" href="{{ url_for('hours_new') }}">+ Cargar horas</a>
+</div>
+
+<div class="card">
+  {% if entries %}
+  <table>
+    <thead>
+      <tr>
+        <th>Fecha</th><th>Cliente</th><th>Proyecto</th><th>Persona</th>
+        <th>Horas</th><th>Descripción</th><th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for e in entries %}
+      <tr>
+        <td>{{ e.entry_date.strftime('%Y-%m-%d') }}</td>
+        <td>{{ e.project.client.name }}</td>
+        <td>{{ e.project.name }}</td>
+        <td>{{ e.person }}</td>
+        <td>{{ '%.2f'|format(e.hours) }}</td>
+        <td>{{ e.description or '—' }}</td>
+        <td class="actions">
+          <a class="btn small secondary" href="{{ url_for('hours_edit', entry_id=e.id) }}">Editar</a>
+          <form class="inline-form" method="post" action="{{ url_for('hours_delete', entry_id=e.id) }}"
+                onsubmit="return confirm('¿Eliminar este registro?');">
+            <button class="btn small danger" type="submit">Eliminar</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <p class="muted">Mostrando los últimos 200 registros.</p>
+  {% else %}
+  <p class="muted">Sin registros todavía.</p>
+  {% endif %}
+</div>
+{% endblock %}

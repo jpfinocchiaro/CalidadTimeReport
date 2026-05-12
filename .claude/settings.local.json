@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -m pip install -r requirements.txt)",
+      "Bash(cd /d \"D:\\\\CalidadTimeReport\")",
+      "Bash(python -c \"from app import app; client = app.test_client\\(\\); print\\('GET / =>', client.get\\('/'\\).status_code\\); print\\('GET /clients =>', client.get\\('/clients'\\).status_code\\); print\\('GET /projects =>', client.get\\('/projects'\\).status_code\\); print\\('GET /hours =>', client.get\\('/hours'\\).status_code\\); print\\('GET /reports =>', client.get\\('/reports'\\).status_code\\); print\\('GET /clients/new =>', client.get\\('/clients/new'\\).status_code\\)\")",
+      "PowerShell(python -c \"from app import app; c = app.test_client\\(\\); [print\\(r, c.get\\(r\\).status_code\\) for r in ['/', '/clients', '/projects', '/hours', '/reports', '/clients/new', '/projects/new', '/hours/new']]\")",
+      "PowerShell(python app.py 2>&1)",
+      "PowerShell(Get-Process *)",
+      "Bash(python *)"
+    ]
+  }
+}

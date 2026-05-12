@@ -1,0 +1,42 @@
+Stack del proyecto - Calidad Time Report
+==========================================
+
+Backend
+-------
+- Python 3.13 como runtime.
+- Flask 3.0: microframework web para las rutas, manejo de requests/responses y flash messages.
+- Flask-SQLAlchemy 3.1 + SQLAlchemy 2.0: ORM para definir modelos (Client, Consultant, Project, TimeEntry) y la relacion M:N proyecto-consultor.
+- Jinja2 (viene con Flask): motor de plantillas con herencia (base.html) e iteracion sobre objetos del ORM.
+- Werkzeug (viene con Flask): servidor de desarrollo, parsing de formularios.
+
+Persistencia
+------------
+- SQLite local en timereport.db, archivo unico.
+- El esquema se crea en startup con db.create_all() (sin migraciones formales tipo Alembic).
+
+Frontend
+--------
+- HTML5 + Jinja templates server-rendered (sin framework JS, sin SPA).
+- CSS3 plano y propio en static/style.css (sin Bootstrap/Tailwind), con grid y flexbox.
+- JavaScript minimo: solo confirm() inline para confirmar borrados.
+
+Empaquetado / ejecucion
+-----------------------
+- requirements.txt para dependencias.
+- iniciar.bat como launcher de un clic en Windows.
+
+Patron arquitectonico
+---------------------
+- Aplicacion monolitica server-side con renderizado tradicional (MPA, no SPA).
+- Capa unica en app.py con register_routes() (sin Blueprints todavia; cabrian bien si crece).
+- Modelos en models.py separados de las rutas.
+- Validacion inline en las vistas (no se usa Flask-WTF/Pydantic).
+
+Lo que NO tiene (por simplicidad, pero podria agregarse)
+--------------------------------------------------------
+- Autenticacion.
+- Migraciones (Alembic).
+- Tests automatizados.
+- Internacionalizacion.
+- API JSON.
+- Docker.
